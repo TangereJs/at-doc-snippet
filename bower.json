@@ -1,0 +1,17 @@
+{
+  "name": "at-doc-snippet",
+  "version": "0.8.0",
+  "description": "Interactive html snippets",
+  "authors": [
+    "adenin TECHNOLOGIES"
+  ],
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.5.0"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "web-component-tester": "^4.0.0",
+    "test-fixture": "PolymerElements/test-fixture#^1.0.0"
+  }
+}

@@ -1,0 +1,142 @@
+
+<link rel="import" href="../tangere/tangere.html">
+<link rel="import" href="../marked-element/marked-element.html">
+<link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="../paper-styles/shadow.html">
+<link rel="import" href="../at-core-style-classes/at-core-style-classes.html">
+<link rel="import" href="../at-form-codemirror/at-form-codemirror.html">
+<link rel="import" href="../at-core-view/at-core-view.html">
+<link rel="import" href="../marked-element/marked-element.html">
+
+<!--
+`at-doc-snippet` is a helper element that displays the source of a code snippet and
+its rendered demo. It can be used for both native elements and Polymer elements.
+
+    Example of a native element demo
+
+```
+        <at-doc-snippet>
+          <template>
+            <input type="date">
+          </template>
+        </at-doc-snippet>
+```
+
+    Example of a Polymer <paper-checkbox> demo
+
+```
+        <at-doc-snippet>
+          <template>
+            <paper-checkbox>Checkbox</paper-checkbox>
+            <paper-checkbox checked>Checkbox</paper-checkbox>
+          </template>
+        </at-doc-snippet>
+```
+
+### Styling
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--at-doc-snippet` | Mixin applied to the entire element | `{}`
+`--at-doc-snippet-demo` | Mixin applied to just the demo section | `{}`
+`--at-doc-snippet-code` | Mixin applied to just the code section | `{}`
+
+@element at-doc-snippet
+@demo demo/index.html
+-->
+
+<dom-module id="at-doc-snippet">
+  <template>
+    <style include="at-core-style-classes"></style>
+    <style>
+      :host {
+        display: block;        
+        @apply(--at-doc-snippet);
+      }
+
+      .demo {
+        @apply(--shadow-elevation-2dp);
+        border-bottom: 1px solid var(--google-grey-300);
+        background-color: white;
+        margin: 0;
+        padding: 20px;        
+        @apply(--at-doc-snippet-demo);
+        overflow: auto;
+      }
+
+      .code {       
+        padding: 20px;
+        margin: 0;
+        background-color: var(--google-grey-100);
+        font-size: 13px;
+        overflow: auto;
+        @apply(--at-doc-snippet-code);
+      }
+
+      .code-container {
+        position: relative;
+      }
+
+      .container {
+        background-color: #ccc;
+        padding: 5px;
+        margin: 0;
+      }
+      
+      .container > div {
+        padding: 15px;
+        margin: 5px;
+        background-color: white;
+        min-height: 20px;
+      }
+    </style>
+      
+    <div class="demo">      
+      <at-core-view id="view" view="{{snippet}}"></at-core-view>
+    </div>
+
+    <div class="code-container">
+     <at-form-codemirror id="code" mode="htmlmixed" max-lines="50" value="{{snippet}}"></at-form-codemirror>     
+    </div>
+     <marked-element id="marked" hidden></marked-element>
+  </template>
+
+  <script>
+    'use strict';
+
+    Polymer({
+      is: 'at-doc-snippet',
+
+      properties: {
+        snippet: {
+          type: String,
+          value: '',
+          notify: true,
+          xtype: 'code',
+          mode: "htmlmixed"
+        }
+      },
+
+      attached: function() {
+        var snippet = '\n';
+        this.$.view.value = {};
+        
+        var template = Polymer.dom(this).queryDistributedElements('template')[0];
+
+        if (template) {
+          // just use marked element to remove leading indention of template
+          snippet = this.$.marked.unindent(template.innerHTML);
+        }
+        
+        // Boolean properties are displayed as checked="", so remove the ="" bit.
+        snippet = snippet.replace(/=""/g, '');
+        
+        this.snippet = snippet;
+      }
+
+    });
+  </script>
+
+</dom-module>
