@@ -9,7 +9,7 @@
   "dependencies": {
     "tangere": "TangereJs/tangere#master",
     "marked-element": "TangereJs/marked-element#master",
-    "paper-styles": "PolymerElements/paper-styles#master",
+    "paper-styles": "TangereJs/paper-styles#master",
     "at-core-style-classes": "TangereJs/at-core-style-classes#master",
     "at-form-codemirror": "TangereJs/at-form-codemirror#master",
     "at-core-view": "TangereJs/at-core-view#master",
