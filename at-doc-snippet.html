@@ -6,7 +6,6 @@
 <link rel="import" href="../at-core-style-classes/at-core-style-classes.html">
 <link rel="import" href="../at-form-codemirror/at-form-codemirror.html">
 <link rel="import" href="../at-core-view/at-core-view.html">
-<link rel="import" href="../marked-element/marked-element.html">
 
 <!--
 `at-doc-snippet` is a helper element that displays the source of a code snippet and
@@ -52,7 +51,7 @@ Custom property | Description | Default
     <style include="at-core-style-classes"></style>
     <style>
       :host {
-        display: block;        
+        display: block;
         @apply(--at-doc-snippet);
       }
 
@@ -60,12 +59,12 @@ Custom property | Description | Default
         @apply(--shadow-elevation-2dp);
         border-bottom: 1px solid var(--google-grey-300);
         background-color: white;
-        margin: 0;        
+        margin: 0;
         @apply(--at-doc-snippet-demo);
         overflow: auto;
       }
 
-      .code {       
+      .code {
         padding: 20px;
         margin: 0;
         background-color: var(--google-grey-100);
@@ -83,7 +82,7 @@ Custom property | Description | Default
         padding: 5px;
         margin: 0;
       }
-      
+
       .container > div {
         padding: 15px;
         margin: 5px;
@@ -91,13 +90,13 @@ Custom property | Description | Default
         min-height: 20px;
       }
     </style>
-      
-    <div class="demo">      
+
+    <div class="demo">
       <at-core-view id="view" view="{{snippet}}"></at-core-view>
     </div>
 
     <div class="code-container">
-     <at-form-codemirror id="code" mode="htmlmixed" max-lines="50" value="{{snippet}}"></at-form-codemirror>     
+     <at-form-codemirror id="code" mode="htmlmixed" max-lines="50" value="{{snippet}}"></at-form-codemirror>
     </div>
      <marked-element id="marked" hidden></marked-element>
   </template>
@@ -121,17 +120,17 @@ Custom property | Description | Default
       attached: function() {
         var snippet = '\n';
         this.$.view.value = {};
-        
+
         var template = Polymer.dom(this).queryDistributedElements('template')[0];
 
         if (template) {
           // just use marked element to remove leading indention of template
           snippet = this.$.marked.unindent(template.innerHTML);
         }
-        
+
         // Boolean properties are displayed as checked="", so remove the ="" bit.
         snippet = snippet.replace(/=""/g, '');
-        
+
         this.snippet = snippet;
       }
 

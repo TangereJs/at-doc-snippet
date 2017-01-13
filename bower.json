@@ -7,7 +7,14 @@
   ],
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.5.0"
+    "tangere": "TangereJs/tangere#0.8-preview",
+    "marked-element": "TangereJs/marked-element#0.8-preview",
+    "paper-styles": "PolymerElements/paper-styles#master",
+    "at-core-style-classes": "TangereJs/at-core-style-classes#0.8-preview",
+    "at-form-codemirror": "TangereJs/at-form-codemirror#0.8-preview",
+    "at-core-view": "TangereJs/at-core-view#0.8-preview",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#master",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#master"
   },
   "devDependencies": {
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
