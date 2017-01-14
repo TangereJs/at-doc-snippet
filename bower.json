@@ -8,7 +8,7 @@
   "private": true,
   "dependencies": {
     "tangere": "TangereJs/tangere#0.8-preview",
-    "marked-element": "TangereJs/marked-element#0.8-preview",
+    "marked-element": "polymerelements/marked-element#^1.0.0",
     "paper-styles": "TangereJs/paper-styles#0.8-preview",
     "at-core-style-classes": "TangereJs/at-core-style-classes#0.8-preview",
     "at-form-codemirror": "TangereJs/at-form-codemirror#0.8-preview",
