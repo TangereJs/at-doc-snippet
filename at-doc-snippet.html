@@ -100,15 +100,21 @@ Custom property | Description | Default
       }
     </style>
     
-    <div id="layoutController" class="layout-vertical">
-      <div class="demo">
-        <at-core-view id="view" view="{{snippet}}"></at-core-view>
+    <div id="hlc">
+      <div id="hlcDemo" class="demo">
+        <at-core-view id="view" view="{{snippet}}" class="core-view"></at-core-view>
       </div>
-      <at-core-splitter id="coreSplitter" direction="left"></at-core-splitter>
-      <div class="code-container layout-flex">
-       <at-form-codemirror id="code" mode="[[mode]]" max-lines="50" value="{{snippet}}" change-on-keypress></at-form-codemirror>
+      <div id="hlcCodeContainer" class="code-container">
+       <at-form-codemirror id="code" mode="[[mode]]" max-lines="50" value="{{snippet}}" change-on-keypress class="codemirror"></at-form-codemirror>
       </div>
     </div>
+
+    <div id="vlc" class="layout-horizontal" hidden>
+      <div id="vlcCodeContainer" class="code-container"></div>
+      <at-core-splitter id="coreSplitter" direction="left" allow-overflow></at-core-splitter>
+      <div id="vlcDemo" class="demo layout-flex"></div>
+    </div>
+
     <marked-element id="marked" hidden></marked-element>
   </template>
 
@@ -139,11 +145,11 @@ Custom property | Description | Default
          * 
          * @property layout
          * @type String
-         * @default 'vertical'
+         * @default 'horizontal'
          */
         layout: {
           type: String,
-          value: 'vertical',
+          value: 'horizontal',
           observer: '_layoutChanged',
           xvaluelist: [
             { title: "Vertical", value: "vertical" },
@@ -197,8 +203,33 @@ Custom property | Description | Default
 
       _layoutChanged: function(newValue, oldValue) {
         var isHorizontal = newValue === 'horizontal';
-        this.toggleClass('layout-horizontal', isHorizontal, this.$.layoutController);
-        this.toggleClass('layout-vertical', !isHorizontal, this.$.layoutController);
+        var alreadyHorizontal = !this.$.hlc.hasAttribute('hidden');
+
+        if (isHorizontal && alreadyHorizontal) return;
+
+        if (isHorizontal) {
+          this.$.vlc.setAttribute('hidden', true);
+
+          Polymer.dom(this.$.vlcDemo).removeChild(this.$.view);
+          Polymer.dom(this.$.hlcDemo).appendChild(this.$.view);
+
+          Polymer.dom(this.$.vlcCodeContainer).removeChild(this.$.code);
+          Polymer.dom(this.$.hlcCodeContainer).appendChild(this.$.code);
+
+          this.$.hlc.removeAttribute('hidden');
+        
+        } else {
+          this.$.hlc.setAttribute('hidden', true);
+
+          Polymer.dom(this.$.hlcDemo).removeChild(this.$.view);
+          Polymer.dom(this.$.vlcDemo).appendChild(this.$.view);
+
+          Polymer.dom(this.$.hlcCodeContainer).removeChild(this.$.code);
+          Polymer.dom(this.$.vlcCodeContainer).appendChild(this.$.code);
+
+          this.$.vlc.removeAttribute('hidden');
+          this.$.coreSplitter.update();
+        }
       }
 
     });
