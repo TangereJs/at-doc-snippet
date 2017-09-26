@@ -6,6 +6,7 @@
 <link rel="import" href="../at-core-style-classes/at-core-style-classes.html">
 <link rel="import" href="../at-form-codemirror/at-form-codemirror.html">
 <link rel="import" href="../at-core-view/at-core-view.html">
+<link rel="import" href="../at-core-splitter/at-core-splitter.html" />
 
 <!--
 `at-doc-snippet` is a helper element that displays the source of a code snippet and
@@ -48,11 +49,11 @@ Custom property | Description | Default
 
 <dom-module id="at-doc-snippet">
   <template>
-    <style include="at-core-style-classes"></style>
-    <style>
+    <style include="at-core-style-classes">
       :host {
         display: block;
         @apply(--at-doc-snippet);
+        box-sizing: border-box;
       }
 
       .demo {
@@ -77,6 +78,14 @@ Custom property | Description | Default
         position: relative;
       }
 
+      .layout-horizontal > .demo {
+        width: 50%;
+      }
+
+      .layout-horizontal > .code-container {
+        width: 50%;
+      }
+
       .container {
         background-color: var(--at-doc-snippet-background-color, #ccc);
         padding: 5px;
@@ -90,15 +99,17 @@ Custom property | Description | Default
         min-height: 20px;
       }
     </style>
-
-    <div class="demo">
-      <at-core-view id="view" view="{{snippet}}"></at-core-view>
+    
+    <div id="layoutController" class="layout-vertical">
+      <div class="demo">
+        <at-core-view id="view" view="{{snippet}}"></at-core-view>
+      </div>
+      <at-core-splitter id="coreSplitter" direction="left"></at-core-splitter>
+      <div class="code-container layout-flex">
+       <at-form-codemirror id="code" mode="[[mode]]" max-lines="50" value="{{snippet}}" change-on-keypress></at-form-codemirror>
+      </div>
     </div>
-
-    <div class="code-container">
-     <at-form-codemirror id="code" mode="htmlmixed" max-lines="50" value="{{snippet}}" change-on-keypress></at-form-codemirror>
-    </div>
-     <marked-element id="marked" hidden></marked-element>
+    <marked-element id="marked" hidden></marked-element>
   </template>
 
   <script>
@@ -108,12 +119,62 @@ Custom property | Description | Default
       is: 'at-doc-snippet',
 
       properties: {
+        /**
+         * snippet
+         * 
+         * @property snippet
+         * @type String
+         * @default '' 
+         */
         snippet: {
           type: String,
           value: '',
           notify: true,
           xtype: 'code',
           mode: "htmlmixed"
+        },
+
+        /**
+         * Elements' layout
+         * 
+         * @property layout
+         * @type String
+         * @default 'vertical'
+         */
+        layout: {
+          type: String,
+          value: 'vertical',
+          observer: '_layoutChanged',
+          xvaluelist: [
+            { title: "Vertical", value: "vertical" },
+            { title: "Horizontal", value: "horizontal" }
+          ]
+        },
+
+      /**
+       * Syntax highlighting mode
+       *
+       * @property mode
+       * @type String
+       * @default ''
+       */
+        mode: {
+          type: String,
+          value: 'htmlmixed',
+          xtype: 'enum',
+          xvaluelist: [{
+            title: "htmlmixed", value: "htmlmixed" }, {
+            title: "carbon", value: "carbon" }, {
+            title: "javascript", value: "javascript" }, {
+            title: "css", value: "css" }, {
+            title: "markdown", value: "markdown" }, {
+            title: "sql", value: "text/x-sql" }, {
+            title: "xml", value: "xml" }, {
+            title: "liquid", value: "liquid" }, {
+            title: "json", value: "application/json" }, {
+            title: "yaml", value: "yaml" }, {
+            title: "markdown", value: "markdown"
+          }]
         }
       },
 
@@ -132,6 +193,12 @@ Custom property | Description | Default
         snippet = snippet.replace(/=""/g, '');
 
         this.snippet = snippet;
+      },
+
+      _layoutChanged: function(newValue, oldValue) {
+        var isHorizontal = newValue === 'horizontal';
+        this.toggleClass('layout-horizontal', isHorizontal, this.$.layoutController);
+        this.toggleClass('layout-vertical', !isHorizontal, this.$.layoutController);
       }
 
     });
