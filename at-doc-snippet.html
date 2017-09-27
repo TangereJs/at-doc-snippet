@@ -197,6 +197,14 @@ Custom property | Description | Default
 
         // Boolean properties are displayed as checked="", so remove the ="" bit.
         snippet = snippet.replace(/=""/g, '');
+        // if first character of snippet is a new line we remove it because its causing unexpected new line to be shown in codemirror
+        if (snippet[0] === "\n") {
+          snippet = snippet.slice(1);
+        }
+        // if last  character of snippet is a new line we remove it because its causing unexpected new line to be shown in codemirror
+        if (snippet[snippet.length-1] === "\n") {
+          snippet = snippet.slice(0, snippet.length-1);
+        }
 
         this.snippet = snippet;
       },
