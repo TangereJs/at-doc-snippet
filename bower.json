@@ -13,8 +13,8 @@
     "at-core-style-classes": "TangereJs/at-core-style-classes#master",
     "at-form-codemirror": "TangereJs/at-form-codemirror#master",
     "at-core-view": "TangereJs/at-core-view#master",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#master",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#master"
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0"
   },
   "devDependencies": {
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
